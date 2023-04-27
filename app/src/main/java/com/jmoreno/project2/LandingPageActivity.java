@@ -34,6 +34,7 @@ public class LandingPageActivity extends AppCompatActivity {
 
     Button mAddRemoveButton;
     Button mSignOutButton;
+    Button mNewOrderButton;
 
     TextView mWelcome;
     TextView mInfoText;
@@ -56,10 +57,11 @@ public class LandingPageActivity extends AppCompatActivity {
         mAddRemoveButton = findViewById(R.id.add_remove_button);
         mInfoText = bindingLanding.infoTextView;
         mSignOutButton = bindingLanding.logoutButton;
+        mNewOrderButton = bindingLanding.newOrdersButton;
 
 
         getDatabase();
-        checkForUser();
+//        checkForUser();
         addUserToPref(mUserId);
         loginUser(mUserId);
 
@@ -79,6 +81,15 @@ public class LandingPageActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 logoutUser();
+            }
+        });
+
+        mNewOrderButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(SearchActivity.intentFactory(getApplicationContext(), mUserId));
+                startActivity(intent);
+                finish();
             }
         });
 

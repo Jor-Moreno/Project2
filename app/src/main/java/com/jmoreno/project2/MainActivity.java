@@ -29,13 +29,23 @@ public class MainActivity extends AppCompatActivity {
         setContentView(view);
 
         loginButton = binding.loginButton;
+        signupButton = binding.signupButton;
 
 
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = LoginActivity.getIntent(getApplicationContext());
+                Intent intent = LoginActivity.intentFactory(getApplicationContext());
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        signupButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = SignupActivity.intentFactory(getApplicationContext());
                 startActivity(intent);
                 finish();
             }

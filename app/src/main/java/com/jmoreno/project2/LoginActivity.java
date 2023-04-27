@@ -59,7 +59,7 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    public static Intent getIntent(Context packageContext){
+    public static Intent intentFactory(Context packageContext){
         Intent intent = new Intent(packageContext, LoginActivity.class);
         return intent;
     }
@@ -80,6 +80,7 @@ public class LoginActivity extends AppCompatActivity {
                     } else {
                         Intent intent = LandingPageActivity.intentFactory(getApplicationContext(), mUser.getUserid());
                         startActivity(intent);
+                        finish();
                     }
                 }
             }
