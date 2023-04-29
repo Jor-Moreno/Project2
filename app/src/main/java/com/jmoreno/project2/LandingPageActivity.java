@@ -84,6 +84,8 @@ public class LandingPageActivity extends AppCompatActivity {
             }
         });
 
+        defaultCongos();
+
         mNewOrderButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -198,4 +200,31 @@ public class LandingPageActivity extends AppCompatActivity {
     private void getPrefs() {
         mPreference = this.getSharedPreferences(PREFERENCE_KEY, Context.MODE_PRIVATE);
     }
+
+    private void defaultCongos(){
+        Congo c1 = new Congo("blanket", 15.99, 9);
+        Congo c2 = new Congo("cup", 1.99, 3);
+        Congo c3 = new Congo("socks", 5.99, 10);
+        Congo c4 = new Congo("forks", 3.99, 5);
+
+        if(!checkForCongo(c1)){
+            mCongoDAO.insert(c1);
+        } else if(!checkForCongo(c2)){
+            mCongoDAO.insert(c2);
+        } else if(!checkForCongo(c3)){
+            mCongoDAO.insert(c3);
+        } else if(!checkForCongo(c4)){
+            mCongoDAO.insert(c4);
+        }
+    }
+
+    private boolean checkForCongo(Congo congo){
+        for(Congo c: mCongoDAO.getCongo()){
+            if(c.getItemName().equals(congo.getItemName())){
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

@@ -34,6 +34,9 @@ public interface CongoDAO {
     @Query("SELECT * FROM " + AppDataBase.CONGO_TABLE + " WHERE mUserId = :userId")
     List<Congo> getCongoByUserId(int userId);
 
+    @Query("SELECT * FROM " + AppDataBase.CONGO_TABLE + " WHERE mItemName = :itemName")
+    Congo getCongoByName(String itemName);
+
     @Insert
     void insert(User...users);
 
