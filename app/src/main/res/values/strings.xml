@@ -1,3 +1,18 @@
 <resources>
     <string name="app_name">Project2</string>
+    <string name="username_input">Username</string>
+    <string name="password_input">Password</string>
+    <string name="login_button">Log In</string>
+    <string name="signup_input">Sign Up</string>
+    <string name="not_a_user_sign_up_nowText">Not a user? Sign up now</string>
+    <string name="welcome_to_congoText">Welcome To CONGO</string>
+    <string name="an_ecommerce_appText">An eCommerce App</string>
+    <string name="welcome_userText">Welcome [User]!</string>
+    <string name="new_orderText">New Order</string>
+    <string name="optionText">You can now add orders, view previous orders or sign out</string>
+    <string name="enter_search_hereText">🔎Enter Search Here</string>
+    <string name="logout">Logout?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+
 </resources>
