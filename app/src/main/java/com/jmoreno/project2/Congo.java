@@ -17,12 +17,11 @@ public class Congo {
     private double mPrice;
     private int mAmount;
 
-    public Congo(String itemName, double price, int amount, int itemId) {
+    public Congo(String itemName, double price, int amount) {
         mItemName = itemName;
         mPrice = price;
         mAmount = amount;
 
-        mItemId = itemId;
     }
 
     @Override
@@ -30,7 +29,7 @@ public class Congo {
         return "Item #" + mItemId + "\n"+
                 "ItemName " + mItemName + "\n"+
                 "Price " + mPrice +"\n"+
-                " Amount " + mAmount;
+                "Amount Available" + mAmount;
     }
 
     public String getUserId() {
