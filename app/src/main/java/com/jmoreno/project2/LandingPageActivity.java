@@ -34,7 +34,7 @@ public class LandingPageActivity extends AppCompatActivity {
 
     Button mAddRemoveButton;
     Button mSignOutButton;
-    Button mNewOrderButton;
+    Button mNewOrderButton;;
 
     TextView mWelcome;
     TextView mInfoText;
@@ -54,7 +54,7 @@ public class LandingPageActivity extends AppCompatActivity {
         setContentView(view);
 
         mWelcome = bindingLanding.welcomeTextView;
-        mAddRemoveButton = findViewById(R.id.add_remove_button);
+        mAddRemoveButton = bindingLanding.addRemoveButton;
         mInfoText = bindingLanding.infoTextView;
         mSignOutButton = bindingLanding.logoutButton;
         mNewOrderButton = bindingLanding.newOrdersButton;
@@ -90,6 +90,15 @@ public class LandingPageActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(SearchActivity.intentFactory(getApplicationContext(), mUserId));
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        mAddRemoveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AddRemoveActivity.intentFactory(getApplicationContext(), mUserId));
                 startActivity(intent);
                 finish();
             }
@@ -206,6 +215,7 @@ public class LandingPageActivity extends AppCompatActivity {
         Congo c2 = new Congo("cup", 1.99, 3);
         Congo c3 = new Congo("socks", 5.99, 10);
         Congo c4 = new Congo("forks", 3.99, 5);
+        Congo c5 = new Congo("shoes", 89.99, 6);
 
         if(!checkForCongo(c1)){
             mCongoDAO.insert(c1);
@@ -215,6 +225,8 @@ public class LandingPageActivity extends AppCompatActivity {
             mCongoDAO.insert(c3);
         } else if(!checkForCongo(c4)){
             mCongoDAO.insert(c4);
+        } else if(!checkForCongo(c5)){
+            mCongoDAO.insert(c5);
         }
     }
 
