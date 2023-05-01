@@ -52,6 +52,9 @@ public interface CongoDAO {
     @Query("SELECT * FROM " + AppDataBase.USER_TABLE + " WHERE mUsername = :username")
     User getUserByUsername(String username);
 
+    @Query("SELECT * FROM " + AppDataBase.USER_TABLE + " WHERE mPassword = :password")
+    User getUserByUserPassword(String password);
+
     @Query("SELECT * FROM " + AppDataBase.USER_TABLE + " WHERE mUserid = :userId")
     User getUserByUserId(int userId);
 

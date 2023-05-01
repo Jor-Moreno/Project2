@@ -2,12 +2,21 @@ package com.jmoreno.project2;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.room.Room;
 
+import android.annotation.SuppressLint;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -33,8 +42,10 @@ public class LandingPageActivity extends AppCompatActivity {
     ActivityLandingPageBinding bindingLanding;
 
     Button mAddRemoveButton;
+    Button mViewAllItemsButton;
     Button mSignOutButton;
     Button mNewOrderButton;
+    ;
 
     TextView mWelcome;
     TextView mInfoText;
@@ -44,6 +55,7 @@ public class LandingPageActivity extends AppCompatActivity {
     private SharedPreferences mPreference = null;
 
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,26 +66,29 @@ public class LandingPageActivity extends AppCompatActivity {
         setContentView(view);
 
         mWelcome = bindingLanding.welcomeTextView;
-        mAddRemoveButton = findViewById(R.id.add_remove_button);
+        mAddRemoveButton = bindingLanding.addRemoveButton;
+        mViewAllItemsButton = bindingLanding.viewItemsButton;
         mInfoText = bindingLanding.infoTextView;
         mSignOutButton = bindingLanding.logoutButton;
         mNewOrderButton = bindingLanding.newOrdersButton;
 
 
         getDatabase();
-//        checkForUser();
+        checkForUser();
         addUserToPref(mUserId);
-        loginUser(mUserId);
+//        loginUser(mUserId);
 
-        mUserId = getIntent().getIntExtra(USER_ID_KEY,-1);
+        mUserId = getIntent().getIntExtra(USER_ID_KEY, -1);
         loginUser(mUserId);
         mWelcome.setText("Welcome " + mUser.getUserName() + "!");
 
-        if(mUser.getClearance() == 0){
+        if (mUser.getClearance() == 0) {
             mAddRemoveButton.setVisibility(View.INVISIBLE);
+            mViewAllItemsButton.setVisibility(View.INVISIBLE);
             mInfoText.setText("You can now add orders, view previous orders or sign out");
         } else {
             mAddRemoveButton.setVisibility(View.VISIBLE);
+            mViewAllItemsButton.setVisibility(View.VISIBLE);
             mInfoText.setText("You can now add orders, view previous orders, add and/or remove items or sign out");
         }
 
@@ -95,6 +110,54 @@ public class LandingPageActivity extends AppCompatActivity {
             }
         });
 
+        mAddRemoveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AddRemoveActivity.intentFactory(getApplicationContext(), mUserId));
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        mViewAllItemsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AllIItemsActivity.intentFactory(getApplicationContext(), mUserId));
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel("My Notification", "My Notification", NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationManager manager = getSystemService(NotificationManager.class);
+            manager.createNotificationChannel(channel);
+        }
+
+        addNotification();
+
+    }
+
+    private void addNotification() {
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(LandingPageActivity.this, "My Notification");
+        builder.setSmallIcon(R.drawable.ic_launcher_foreground);
+        builder.setContentTitle("CONGO Special Deals");
+        builder.setContentText("Check out the special deals " + mUser.getUserName() + "!");
+        builder.setAutoCancel(true);
+
+
+        NotificationManagerCompat managerCompat = NotificationManagerCompat.from(LandingPageActivity.this);
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        managerCompat.notify(1, builder.build());
     }
 
     private void addUserToPref(int userId) {
@@ -132,7 +195,9 @@ public class LandingPageActivity extends AppCompatActivity {
                         clearUserFromIntent();
                         clearUserFromPref();
                         mUserId = -1;
-                        checkForUser();
+                        Intent intent = MainActivity.intentFactory(LandingPageActivity.this);
+                        startActivity(intent);
+                        finish();
                     }
                 });
 
@@ -156,12 +221,6 @@ public class LandingPageActivity extends AppCompatActivity {
         addUserToPref(-1);
     }
 
-    public boolean isAdmin(User user){
-        if(user.getClearance() == 0){
-            return false;
-        }
-        return true;
-    }
 
     private void checkForUser(){
         mUserId = getIntent().getIntExtra(USER_ID_KEY, -1);
@@ -185,9 +244,6 @@ public class LandingPageActivity extends AppCompatActivity {
             User defaultAdmin = new User("admin1", "admin1", 1);
             mCongoDAO.insert(defaultUser,defaultAdmin);
         }
-
-        Intent intent = MainActivity.intentFactory(this, -1);
-        startActivity(intent);
     }
 
 
@@ -206,6 +262,7 @@ public class LandingPageActivity extends AppCompatActivity {
         Congo c2 = new Congo("cup", 1.99, 3);
         Congo c3 = new Congo("socks", 5.99, 10);
         Congo c4 = new Congo("forks", 3.99, 5);
+        Congo c5 = new Congo("shoes", 89.99, 6);
 
         if(!checkForCongo(c1)){
             mCongoDAO.insert(c1);
@@ -215,6 +272,8 @@ public class LandingPageActivity extends AppCompatActivity {
             mCongoDAO.insert(c3);
         } else if(!checkForCongo(c4)){
             mCongoDAO.insert(c4);
+        } else if(!checkForCongo(c5)){
+            mCongoDAO.insert(c5);
         }
     }
 

@@ -111,7 +111,7 @@ public class SearchActivity extends AppCompatActivity {
         if(mUser == null){
             Toast.makeText(this, " Error Getting User", Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(this, "Hi " + mUser.getUserName(), Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "Hi " + mUser.getUserName(), Toast.LENGTH_SHORT).show();
         }
         invalidateMenu();
     }

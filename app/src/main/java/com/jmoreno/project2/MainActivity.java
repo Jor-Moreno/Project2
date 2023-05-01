@@ -52,9 +52,8 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public static Intent intentFactory(Context packageContext, int userId){
+    public static Intent intentFactory(Context packageContext){
         Intent intent = new Intent(packageContext, MainActivity.class);
-        intent.putExtra(USER_ID_KEY, userId);
         return intent;
     }
 

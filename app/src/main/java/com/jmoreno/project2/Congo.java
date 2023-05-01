@@ -26,10 +26,9 @@ public class Congo {
 
     @Override
     public String toString() {
-        return "Item #" + mItemId + "\n"+
-                "ItemName " + mItemName + "\n"+
-                "Price " + mPrice +"\n"+
-                "Amount Available" + mAmount;
+        return "Item Name: " + mItemName + "\n"+
+                "Price: $" + mPrice +"\n"+
+                "Amount Available: " + mAmount;
     }
 
     public String getUserId() {
