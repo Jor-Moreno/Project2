@@ -36,6 +36,7 @@ public class SignupActivity extends AppCompatActivity {
     private int mUserId = -1;
 
     private Button mSignupButton;
+    private Button mCancelButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,20 +51,31 @@ public class SignupActivity extends AppCompatActivity {
         mPassword = binding.passwordInput2;
         mAdminCode = binding.adminInput2;
         mSignupButton = binding.signupButton2;
+        mCancelButton = binding.cancelButton;
 
-        getValuesFromDisplay();
+//        getValuesFromDisplay();
         getDatabase();
+
+        mCancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.intentFactory(getApplicationContext()));
+                startActivity(intent);
+                finish();
+            }
+        });
 
         mSignupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getValuesFromDisplay();
-                if(checkForUserInDatabase()){
-                    createUser();
-                    Toast.makeText(SignupActivity.this, "Created User", Toast.LENGTH_SHORT).show();
-                    Intent intent = LoginActivity.intentFactory(getApplicationContext());
-                    startActivity(intent);
-                    finish();
+                if(getValuesFromDisplay()){
+                    if(checkForUserInDatabase()){
+                        createUser();
+                        Toast.makeText(SignupActivity.this, "Created User", Toast.LENGTH_SHORT).show();
+                        Intent intent = LoginActivity.intentFactory(getApplicationContext());
+                        startActivity(intent);
+                        finish();
+                    }
                 }
             }
         });
@@ -72,7 +84,7 @@ public class SignupActivity extends AppCompatActivity {
 
     private void createUser() {
         if(!checkForUserInDatabase()){
-            Toast.makeText(this, "Already a user, Try different Password", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Already a user, Try Username or Password", Toast.LENGTH_SHORT).show();
             return;
         }
         int clearance = 0;
@@ -89,10 +101,16 @@ public class SignupActivity extends AppCompatActivity {
         return intent;
     }
 
-    private void getValuesFromDisplay(){
+    private boolean getValuesFromDisplay(){
         mUsernameStr = mUsername.getText().toString();
         mPasswordStr = mPassword.getText().toString();
         mAdminCodeStr = mAdminCode.getText().toString();
+
+        if(mUsernameStr.isEmpty() || mPasswordStr.isEmpty()){
+            Toast.makeText(this, "A field is empty, don't do that", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
     }
 
     private void getDatabase(){
@@ -104,11 +122,19 @@ public class SignupActivity extends AppCompatActivity {
     private boolean checkForUserInDatabase(){
         mUser = mCongoDAO.getUserByUsername(mUsernameStr);
         if(mUser == null){
-            Toast.makeText(this, "Creating Account" + mUsernameStr, Toast.LENGTH_SHORT).show();
-            return true;
+            mUser = mCongoDAO.getUserByUserPassword(mPasswordStr);
+            if(mUser == null){
+                Toast.makeText(this, "Creating Account" + mUsernameStr, Toast.LENGTH_SHORT).show();
+                return true;
+            } else {
+                Toast.makeText(this, "Already a User, Try a difference Password", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            Toast.makeText(this, "Already a User, Try a difference Username", Toast.LENGTH_SHORT).show();
+
         }
-        Toast.makeText(this, "Already a User", Toast.LENGTH_SHORT).show();
         return false;
     }
+
 
 }

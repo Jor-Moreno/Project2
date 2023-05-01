@@ -28,6 +28,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText mPasswordField;
 
     private Button mButton;
+    private Button backButton;
 
     private CongoDAO mCongoDAO;
 
@@ -69,6 +70,7 @@ public class LoginActivity extends AppCompatActivity {
         mPasswordField = findViewById(R.id.password_input);
 
         mButton = findViewById(R.id.login_button);
+        backButton = findViewById(R.id.back_button);
 
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,6 +87,17 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
+
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = MainActivity.intentFactory(getApplicationContext());
+                startActivity(intent);
+                finish();
+            }
+        });
+
+
     }
 
     private boolean validatePassword(){

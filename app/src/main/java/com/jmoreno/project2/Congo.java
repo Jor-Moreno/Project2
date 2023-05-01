@@ -26,8 +26,7 @@ public class Congo {
 
     @Override
     public String toString() {
-        return "Item #" + mItemId + "\n"+
-                "ItemName: " + mItemName + "\n"+
+        return "Item Name: " + mItemName + "\n"+
                 "Price: $" + mPrice +"\n"+
                 "Amount Available: " + mAmount;
     }

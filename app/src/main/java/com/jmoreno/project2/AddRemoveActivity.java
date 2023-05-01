@@ -81,6 +81,11 @@ public class AddRemoveActivity extends AppCompatActivity {
                 boolean create = true;
                 name = nameInput.getText().toString();
 
+                if(name.isEmpty()){
+                    Toast.makeText(AddRemoveActivity.this, "No name provided", Toast.LENGTH_SHORT).show();
+                    create = false;
+                }
+
                 String num = amountInput.getText().toString();
                 amount = makeInt(num);
 
@@ -96,16 +101,9 @@ public class AddRemoveActivity extends AppCompatActivity {
                     Toast.makeText(AddRemoveActivity.this, "Issue getting price, check number", Toast.LENGTH_SHORT).show();
                     create = false;
                 }
-                if(create) {
-                    if(!checkForCongo(name)) {
-                        Congo c = new Congo(name, price, amount);
-                        mCongoDAO.insert(c);
-                        Toast.makeText(AddRemoveActivity.this, "Item has been added Successfully", Toast.LENGTH_SHORT).show();
 
-                        clearText();
-                    } else {
-                        Toast.makeText(AddRemoveActivity.this, "Already an Item in database", Toast.LENGTH_SHORT).show();
-                    }
+                if(create) {
+                    makeCongo();
                 }
             }
         });
@@ -113,10 +111,56 @@ public class AddRemoveActivity extends AppCompatActivity {
         removeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                boolean del = true;
+                name = nameInput.getText().toString();
 
+                String num = amountInput.getText().toString();
+                amount = makeInt(num);
+
+                if(amount < 0){
+                    Toast.makeText(AddRemoveActivity.this, "Issue getting amount, check number", Toast.LENGTH_SHORT).show();
+                    del = false;
+                }
+
+                if(del){
+                    removeCongo();
+                }
             }
         });
 
+    }
+
+    private void removeCongo() {
+        Congo c = mCongoDAO.getCongoByName(name);
+        if(c == null){
+            Toast.makeText(this, "Not an item in database, cannot remove", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(amount >= c.getAmount()){
+            mCongoDAO.delete(c);
+            clearText();
+            Toast.makeText(this, "Successfully removed all items", Toast.LENGTH_SHORT).show();
+        } else {
+            int newAmount = c.getAmount() - amount;
+            Congo newCongo = new Congo(name, c.getPrice(), newAmount);
+
+            mCongoDAO.delete(c);
+            mCongoDAO.insert(newCongo);
+            clearText();
+            Toast.makeText(this, "Successfully removed " + newAmount, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void makeCongo() {
+        if(!checkForCongo(name)) {
+            Congo c = new Congo(name, price, amount);
+            mCongoDAO.insert(c);
+            Toast.makeText(AddRemoveActivity.this, "Item has been added Successfully", Toast.LENGTH_SHORT).show();
+
+            clearText();
+        } else {
+            Toast.makeText(AddRemoveActivity.this, "Already an Item in database", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public static Intent intentFactory(Context context, int userId){
@@ -140,7 +184,7 @@ public class AddRemoveActivity extends AppCompatActivity {
         if(mUser == null){
             Toast.makeText(this, " Error Getting User", Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(this, "Hi " + mUser.getUserName(), Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "Hi " + mUser.getUserName(), Toast.LENGTH_SHORT).show();
         }
         invalidateMenu();
     }
