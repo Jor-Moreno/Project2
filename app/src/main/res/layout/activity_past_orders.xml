@@ -5,33 +5,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/blue"
-    tools:context=".AllIItemsActivity">
-
-    <TextView
-        android:id="@+id/textView11"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="CONGO"
-        android:textSize="25sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.022" />
+    tools:context=".PastOrdersActivity">
 
     <TextView
         android:id="@+id/textView12"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Listed below are all the items in database"
+        android:text="You are looking at orders"
         android:textColor="@color/black"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.108" />
+        app:layout_constraintVertical_bias="0.07" />
 
     <Button
         android:id="@+id/back_button"
@@ -48,12 +35,12 @@
         app:layout_constraintVertical_bias="0.963" />
 
     <TextView
-        android:id="@+id/itemText"
+        android:id="@+id/ordersText"
         android:layout_width="384dp"
         android:layout_height="412dp"
         android:background="@color/peach"
         android:scrollbars="vertical"
-        android:text="Items:"
+        android:text="Orders:"
         android:textColor="@color/black"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -62,33 +49,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.467" />
-
-    <Button
-        android:id="@+id/congo_button"
-        android:layout_width="170dp"
-        android:layout_height="50dp"
-        android:backgroundTint="@color/peach"
-        android:text="Items"
-        android:textColor="@color/black"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.066"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.854" />
-
-    <Button
-        android:id="@+id/users_button"
-        android:layout_width="170dp"
-        android:layout_height="50dp"
-        android:backgroundTint="@color/peach"
-        android:text="Users"
-        android:textColor="@color/black"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.954"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.854" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

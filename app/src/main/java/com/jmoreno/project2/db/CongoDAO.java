@@ -8,6 +8,7 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
+import com.jmoreno.project2.Cart;
 import com.jmoreno.project2.Congo;
 import com.jmoreno.project2.User;
 
@@ -29,7 +30,7 @@ public interface CongoDAO {
     List<Congo> getCongo();
 
     @Query("SELECT * FROM " + AppDataBase.CONGO_TABLE + " WHERE mItemId = :itemId")
-    List<Congo> getCongoById(int itemId);
+    Congo getCongoById(int itemId);
 
     @Query("SELECT * FROM " + AppDataBase.CONGO_TABLE + " WHERE mUserId = :userId")
     List<Congo> getCongoByUserId(int userId);
@@ -57,5 +58,24 @@ public interface CongoDAO {
 
     @Query("SELECT * FROM " + AppDataBase.USER_TABLE + " WHERE mUserid = :userId")
     User getUserByUserId(int userId);
+
+    @Insert
+    void insert(Cart...carts);
+
+    @Update
+    void update(Cart...carts);
+
+    @Delete
+    void delete(Cart cart);
+
+    @Query("SELECT * FROM " + AppDataBase.CART_TABLE)
+    List<Cart> getAllCarts();
+
+    @Query("SELECT * FROM " + AppDataBase.CART_TABLE + " WHERE  mUserId = :userId")
+    Cart getCartByUserId(int userId);
+
+    @Query("SELECT * FROM " + AppDataBase.CART_TABLE + " WHERE  mUserId = :userId")
+    List<Cart> getUserCarts(int userId);
+
 
 }
