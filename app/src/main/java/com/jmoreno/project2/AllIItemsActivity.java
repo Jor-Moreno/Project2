@@ -33,6 +33,8 @@ public class AllIItemsActivity extends AppCompatActivity {
     private SharedPreferences mPreference = null;
 
     Button backButton;
+    Button userButton;
+    Button itemButton;
 
     TextView itemText;
 
@@ -56,6 +58,9 @@ public class AllIItemsActivity extends AppCompatActivity {
 
 
         backButton = binding.backButton;
+        itemButton = binding.congoButton;
+        userButton = binding.usersButton;
+
         itemText = binding.itemText;
         itemText.setMovementMethod(new ScrollingMovementMethod());
 
@@ -68,12 +73,32 @@ public class AllIItemsActivity extends AppCompatActivity {
             }
         });
 
-        populateText();
+        itemButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                populateTextItems();
+            }
+        });
+
+        userButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                populateTextUsers();
+            }
+        });
 
 
     }
 
-    private void populateText() {
+    private void populateTextUsers() {
+        StringBuilder sb = new StringBuilder();
+        for(User u: mCongoDAO.getAllUsers()){
+            sb.append(u.toString() + "\n\n");
+            itemText.setText(sb.toString());
+        }
+    }
+
+    private void populateTextItems() {
         StringBuilder sb = new StringBuilder();
         for(Congo c: mCongoDAO.getCongo()){
             sb.append(c.toString() + "\n\n");

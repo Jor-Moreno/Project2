@@ -266,13 +266,17 @@ public class LandingPageActivity extends AppCompatActivity {
 
         if(!checkForCongo(c1)){
             mCongoDAO.insert(c1);
-        } else if(!checkForCongo(c2)){
+        }
+        if(!checkForCongo(c2)){
             mCongoDAO.insert(c2);
-        } else if(!checkForCongo(c3)){
+        }
+        if(!checkForCongo(c3)) {
             mCongoDAO.insert(c3);
-        } else if(!checkForCongo(c4)){
+        }
+        if(!checkForCongo(c4)){
             mCongoDAO.insert(c4);
-        } else if(!checkForCongo(c5)){
+        }
+        if(!checkForCongo(c5)){
             mCongoDAO.insert(c5);
         }
     }

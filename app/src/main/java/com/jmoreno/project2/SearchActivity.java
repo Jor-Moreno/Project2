@@ -1,9 +1,11 @@
 package com.jmoreno.project2;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.Room;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -41,6 +43,7 @@ public class SearchActivity extends AppCompatActivity {
     String itemNameStr;
     
     Congo currentItem;
+    int currentItemId;
 
     private SharedPreferences mPreference = null;
 
@@ -83,12 +86,82 @@ public class SearchActivity extends AppCompatActivity {
                 
                 if(currentItem != null){
                     itemText.setText(currentItem.toString());
+                    currentItemId = currentItem.getItemId();
                 } else {
                     Toast.makeText(SearchActivity.this, "Not an available item", Toast.LENGTH_SHORT).show();
+                    itemText.setText("Items: ");
                 }
                 
             }
         });
+
+        buyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(currentItem == null){
+                    Toast.makeText(SearchActivity.this, "No item was selected to buy", Toast.LENGTH_SHORT).show();
+                } else {
+                    currentItemId = currentItem.getItemId();
+                    confirmPurchase();
+                }
+            }
+        });
+    }
+
+    private boolean buyItem() {
+        if(currentItem.getAmount() <= 0){
+            Toast.makeText(this, "Currently not in stock", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        for(Cart c: mCongoDAO.getUserCarts(mUserId)){
+            if(c.getCongoId() == currentItemId){
+                int newQuantity = c.getQuantity()+1;
+                int stock = currentItem.getAmount()-1;
+
+                c.setQuantity(newQuantity);
+                currentItem.setAmount(stock);
+
+                mCongoDAO.update(c);
+                mCongoDAO.update(currentItem);
+                itemText.setText(currentItem.toString());
+                return true;
+            }
+        }
+
+        Cart userCart = new Cart(mUserId, currentItemId, 1);
+        int stock = currentItem.getAmount()-1;
+
+        currentItem.setAmount(stock);
+
+        mCongoDAO.insert(userCart);
+        mCongoDAO.update(currentItem);
+        itemText.setText(currentItem.toString());
+
+        return true;
+
+    }
+
+    private void confirmPurchase() {
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
+        alertBuilder.setMessage("Confirm this purchase?");
+
+        alertBuilder.setPositiveButton(getString(R.string.yes),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int which) {
+                        buyItem();
+                        itemNameStr = itemName.getText().toString();
+                    }
+                });
+
+        alertBuilder.setNegativeButton(getString(R.string.no),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int which) {
+                    }
+                });
+        alertBuilder.create().show();
     }
 
     public static Intent intentFactory(Context context, int userId){

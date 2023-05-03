@@ -63,4 +63,32 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.467" />
 
+    <Button
+        android:id="@+id/congo_button"
+        android:layout_width="170dp"
+        android:layout_height="50dp"
+        android:backgroundTint="@color/peach"
+        android:text="Items"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.066"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.854" />
+
+    <Button
+        android:id="@+id/users_button"
+        android:layout_width="170dp"
+        android:layout_height="50dp"
+        android:backgroundTint="@color/peach"
+        android:text="Users"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.954"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.854" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

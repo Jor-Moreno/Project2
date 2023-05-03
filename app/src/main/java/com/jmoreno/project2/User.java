@@ -22,6 +22,19 @@ public class User {
         mClearance = clearance;
     }
 
+    @Override
+    public String toString() {
+        String ad;
+        if(mClearance == 0){
+            ad = "User";
+        } else {
+            ad = "Admin";
+        }
+        return "User ID: " + mUserid + "\n" +
+                "UserName: " + mUserName + "\n" +
+                "Password: " + mPassword + "\n" +
+                "Account level: " + ad;
+    }
 
     public int getClearance() {
         return mClearance;
