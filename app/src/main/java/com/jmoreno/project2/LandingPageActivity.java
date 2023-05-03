@@ -45,7 +45,7 @@ public class LandingPageActivity extends AppCompatActivity {
     Button mViewAllItemsButton;
     Button mSignOutButton;
     Button mNewOrderButton;
-    ;
+    Button pastOrdersButton;
 
     TextView mWelcome;
     TextView mInfoText;
@@ -71,6 +71,7 @@ public class LandingPageActivity extends AppCompatActivity {
         mInfoText = bindingLanding.infoTextView;
         mSignOutButton = bindingLanding.logoutButton;
         mNewOrderButton = bindingLanding.newOrdersButton;
+        pastOrdersButton = bindingLanding.pastOrdersButton;
 
 
         getDatabase();
@@ -123,6 +124,15 @@ public class LandingPageActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(AllIItemsActivity.intentFactory(getApplicationContext(), mUserId));
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        pastOrdersButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(PastOrdersActivity.intentFactory(getApplicationContext(), mUserId));
                 startActivity(intent);
                 finish();
             }

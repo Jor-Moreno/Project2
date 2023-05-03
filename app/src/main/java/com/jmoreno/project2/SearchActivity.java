@@ -116,6 +116,7 @@ public class SearchActivity extends AppCompatActivity {
 
         for(Cart c: mCongoDAO.getUserCarts(mUserId)){
             if(c.getCongoId() == currentItemId){
+                Toast.makeText(this, "already one we are using", Toast.LENGTH_SHORT).show();
                 int newQuantity = c.getQuantity()+1;
                 int stock = currentItem.getAmount()-1;
 
@@ -128,6 +129,7 @@ public class SearchActivity extends AppCompatActivity {
                 return true;
             }
         }
+        Toast.makeText(this, "this a new one", Toast.LENGTH_SHORT).show();
 
         Cart userCart = new Cart(mUserId, currentItemId, 1);
         int stock = currentItem.getAmount()-1;
