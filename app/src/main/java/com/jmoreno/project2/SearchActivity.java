@@ -116,7 +116,6 @@ public class SearchActivity extends AppCompatActivity {
 
         for(Cart c: mCongoDAO.getUserCarts(mUserId)){
             if(c.getCongoId() == currentItemId){
-                Toast.makeText(this, "already one we are using", Toast.LENGTH_SHORT).show();
                 int newQuantity = c.getQuantity()+1;
                 int stock = currentItem.getAmount()-1;
 
@@ -129,7 +128,6 @@ public class SearchActivity extends AppCompatActivity {
                 return true;
             }
         }
-        Toast.makeText(this, "this a new one", Toast.LENGTH_SHORT).show();
 
         Cart userCart = new Cart(mUserId, currentItemId, 1);
         int stock = currentItem.getAmount()-1;
@@ -146,7 +144,7 @@ public class SearchActivity extends AppCompatActivity {
 
     private void confirmPurchase() {
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
-        alertBuilder.setMessage("Confirm this purchase?");
+        alertBuilder.setMessage("Confirm this purchase of " + currentItem.getItemName() + "?");
 
         alertBuilder.setPositiveButton(getString(R.string.yes),
                 new DialogInterface.OnClickListener() {

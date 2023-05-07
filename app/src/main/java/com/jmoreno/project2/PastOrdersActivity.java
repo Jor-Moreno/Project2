@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -15,6 +16,8 @@ import android.widget.Toast;
 import com.jmoreno.project2.databinding.ActivityPastOrdersBinding;
 import com.jmoreno.project2.db.AppDataBase;
 import com.jmoreno.project2.db.CongoDAO;
+
+import java.text.DecimalFormat;
 
 public class PastOrdersActivity extends AppCompatActivity {
 
@@ -32,8 +35,12 @@ public class PastOrdersActivity extends AppCompatActivity {
 
     TextView orderTextView;
     TextView instructionsTextView;
+    TextView savingsTextView;
+    TextView spendingTextView;
 
     Button backButton;
+
+    private static final DecimalFormat df = new DecimalFormat("0.00");
 
 
 
@@ -47,7 +54,11 @@ public class PastOrdersActivity extends AppCompatActivity {
         setContentView(view);
 
         orderTextView = binding.ordersText;
+        orderTextView.setMovementMethod(new ScrollingMovementMethod());
+
         instructionsTextView = binding.textView12;
+        savingsTextView = binding.totalSavingText;
+        spendingTextView = binding.totalSpendingText;
 
         backButton = binding.backButton;
 
@@ -73,15 +84,22 @@ public class PastOrdersActivity extends AppCompatActivity {
     }
 
     private void showOrders() {
+        double total = 0;
         StringBuilder str = new StringBuilder();
         for(Cart cart: mCongoDAO.getUserCarts(mUserId)){
             Congo congo = mCongoDAO.getCongoById(cart.getCongoId());
             str.append("\nItem Name: " + congo.getItemName());
             str.append("\nAmount: " + cart.getQuantity());
-            str.append("\nTotal: $" + cart.getQuantity()*congo.getPrice());
+            str.append("\nTotal: $" + df.format(cart.getQuantity()*congo.getPrice()));
             str.append("\n___________\n");
+
+            total += cart.getQuantity()*congo.getPrice();
             orderTextView.setText(str.toString());
         }
+
+        double savings = total/200;
+        spendingTextView.setText(spendingTextView.getText()+ " $ " + df.format(total));
+        savingsTextView.setText(savingsTextView.getText() + "$ " + df.format(savings));
         orderTextView.setText(str.toString());
     }
 
