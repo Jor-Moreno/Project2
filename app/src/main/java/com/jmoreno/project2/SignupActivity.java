@@ -124,7 +124,7 @@ public class SignupActivity extends AppCompatActivity {
         if(mUser == null){
             mUser = mCongoDAO.getUserByUserPassword(mPasswordStr);
             if(mUser == null){
-                Toast.makeText(this, "Creating Account" + mUsernameStr, Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Creating Account " + mUsernameStr, Toast.LENGTH_SHORT).show();
                 return true;
             } else {
                 Toast.makeText(this, "Already a User, Try a difference Password", Toast.LENGTH_SHORT).show();

@@ -137,17 +137,15 @@ public class AddRemoveActivity extends AppCompatActivity {
             return;
         }
         if(amount >= c.getAmount()){
-            mCongoDAO.delete(c);
+            c.setAmount(0);
+            mCongoDAO.update(c);
             clearText();
             Toast.makeText(this, "Successfully removed all items", Toast.LENGTH_SHORT).show();
         } else {
-            int newAmount = c.getAmount() - amount;
-            Congo newCongo = new Congo(name, c.getPrice(), newAmount);
-
-            mCongoDAO.delete(c);
-            mCongoDAO.insert(newCongo);
+            c.setAmount(c.getAmount()-amount);
+            mCongoDAO.update(c);
             clearText();
-            Toast.makeText(this, "Successfully removed " + newAmount, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Successfully removed " + amount, Toast.LENGTH_SHORT).show();
         }
     }
 
